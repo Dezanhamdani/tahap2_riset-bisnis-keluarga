@@ -6,12 +6,15 @@ import { FinanceCalendar } from './components/FinanceCalendar';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('profile');
-  const [businessData, setBusinessData] = useState({
-    namaPemagang: '', namaBisnis: '', jenisKomoditas: '',
-    pemasaran: [{ id: 1, text: '' }],
-    calendar_income: [{ id: 1, nama: 'Produk A', monthly: Array(12).fill(0) }],
-    calendar_expense: [{ id: 1, nama: 'Biaya Ops', monthly: Array(12).fill(0) }]
-  });
+ const [businessData, setBusinessData] = useState({
+  namaPemagang: '', 
+  namaBisnis: '', 
+  jenisKomoditas: '',
+  pemasaran: [{ id: 1, text: '' }],
+  risikoBisnis: [{ id: 1, text: '' }], // 
+  calendar_income: [{ id: 1, nama: 'Produk A', monthly: Array(12).fill(0) }],
+  calendar_expense: [{ id: 1, nama: 'Biaya Ops', monthly: Array(12).fill(0) }]
+});
 
   return (
     <div className="flex flex-col h-screen bg-[#F8FAFC]">
