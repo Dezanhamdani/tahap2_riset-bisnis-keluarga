@@ -177,7 +177,7 @@ export default function App() {
     const { jsPDF } = (await loadJsPDF()) as any;
     const doc = new jsPDF('p', 'mm', 'a4');
     doc.setFont("helvetica", "bold");
-    doc.text("BUSINESS STRATEGY REPORT", 15, 20);
+    doc.text("tahap 2 REPORT", 15, 20);
     doc.setFontSize(10);
     doc.text(`Penyusun: ${businessData.namaPemagang}`, 15, 30);
     doc.text(`Bisnis: ${businessData.namaBisnis}`, 15, 35);
@@ -193,7 +193,7 @@ export default function App() {
         <div className="flex items-center gap-3">
           <div className="bg-orange-500 p-2 rounded-xl text-white shadow-lg"><Briefcase size={20} /></div>
           <div>
-            <h1 className="text-white font-black text-sm uppercase tracking-tighter">Business Strategy</h1>
+            <h1 className="text-white font-black text-sm uppercase tracking-tighter">tahap 2</h1>
             <p className="text-slate-400 text-[9px] font-bold uppercase tracking-widest">Family Business Planner</p>
           </div>
         </div>
