@@ -200,22 +200,19 @@ return (
 {activeTab === 'profile' ? (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
               
-              {/* 1. Penyusun Report (独立した作成者枠) */}
-              <div className="bg-slate-900 p-6 rounded-[2rem] shadow-lg border-b-4 border-orange-500">
-                <div className="flex items-center gap-3 mb-4">
-                  <UserCheck size={18} className="text-orange-400"/>
-                  <h2 className="font-black text-[10px] uppercase tracking-widest text-white">Penyusun Report</h2>
+{/* 1. Penyusun Report (背景を白に変更) */}
+              <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-slate-200">
+                <div className="flex items-center gap-3 mb-6">
+                  <UserCheck size={20} className="text-slate-400"/>
+                  <h2 className="font-black text-xs uppercase tracking-widest text-slate-800">Penyusun Report</h2>
                 </div>
-                <div className="bg-white/5 p-1 rounded-2xl">
-                  <TooltipInput 
-                    label="" 
-                    value={businessData.namaPemagang} 
-                    onChange={(v: string) => handleInputChange('namaPemagang', v)} 
-                    placeholder="Nama Lengkap" 
-                  />
-                </div>
+                <TooltipInput 
+                  label="" 
+                  value={businessData.namaPemagang} 
+                  onChange={(v: string) => handleInputChange('namaPemagang', v)} 
+                  placeholder="Nama Lengkap" 
+                />
               </div>
-
               {/* 2. Identitas Bisnis Keluarga (基本情報をひとくくりに) */}
               <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-slate-200">
                 <div className="flex items-center gap-3 mb-8">
