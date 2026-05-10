@@ -235,11 +235,11 @@ export default function App() {
               <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-xl border border-orange-100 border-t-8 border-t-orange-500">
                 <div className="flex items-center gap-3 mb-8 text-orange-600"><LayoutGrid size={24} /><h2 className="font-black text-xs uppercase tracking-widest">Strategi & Keberhasilan</h2></div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <DynamicList title="Pemasaran (販路)" icon={Megaphone} items={businessData.pemasaran} onAdd={() => addDynamicRow('pemasaran')} onRemove={(id: number) => removeDynamicRow('pemasaran', id)} onChange={(id: number, t: string) => updateDynamicRow('pemasaran', id, t)} colorClass="text-blue-600" btnColor="bg-blue-600" placeholder="例：直売所、ECサイト" />
-                  <DynamicList title="Hambatan (障害)" icon={AlertCircle} items={businessData.hambatan} onAdd={() => addDynamicRow('hambatan')} onRemove={(id: number) => removeDynamicRow('hambatan', id)} onChange={(id: number, t: string) => updateDynamicRow('hambatan', id, t)} colorClass="text-rose-600" btnColor="bg-rose-600" placeholder="現在の課題" />
+                  <DynamicList title="Pemasaran" icon={Megaphone} items={businessData.pemasaran} onAdd={() => addDynamicRow('pemasaran')} onRemove={(id: number) => removeDynamicRow('pemasaran', id)} onChange={(id: number, t: string) => updateDynamicRow('pemasaran', id, t)} colorClass="text-blue-600" btnColor="bg-blue-600" placeholder="例：直売所、ECサイト" />
+                  <DynamicList title="Hambatan" icon={AlertCircle} items={businessData.hambatan} onAdd={() => addDynamicRow('hambatan')} onRemove={(id: number) => removeDynamicRow('hambatan', id)} onChange={(id: number, t: string) => updateDynamicRow('hambatan', id, t)} colorClass="text-rose-600" btnColor="bg-rose-600" placeholder="現在の課題" />
                 </div>
                 <div className="mt-6">
-                  <DynamicList title="Kunci Sukses (成功の秘訣)" icon={KeyRound} items={businessData.kunciSukses} onAdd={() => addDynamicRow('kunciSukses')} onRemove={(id: number) => removeDynamicRow('kunciSukses', id)} onChange={(id: number, t: string) => updateDynamicRow('kunciSukses', id, t)} colorClass="text-orange-600" btnColor="bg-orange-600" placeholder="大切にしていること" />
+                  <DynamicList title="Kunci Sukses" icon={KeyRound} items={businessData.kunciSukses} onAdd={() => addDynamicRow('kunciSukses')} onRemove={(id: number) => removeDynamicRow('kunciSukses', id)} onChange={(id: number, t: string) => updateDynamicRow('kunciSukses', id, t)} colorClass="text-orange-600" btnColor="bg-orange-600" placeholder="大切にしていること" />
                 </div>
               </div>
             </div>
