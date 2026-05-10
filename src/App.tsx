@@ -328,5 +328,3 @@ export default function App() {
     </div>
   );
 }
-
-これってApp.tsxに使えますか
