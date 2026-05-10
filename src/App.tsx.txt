@@ -1,0 +1,42 @@
+import React, { useState } from 'react';
+import { Briefcase, BookOpen, Calculator } from 'lucide-react';
+import { BasicProfile } from './components/BasicProfile';
+import { BusinessStrategy } from './components/BusinessStrategy';
+import { FinanceCalendar } from './components/FinanceCalendar';
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState('profile');
+  const [businessData, setBusinessData] = useState({
+    namaPemagang: '', namaBisnis: '', jenisKomoditas: '',
+    pemasaran: [{ id: 1, text: '' }],
+    calendar_income: [{ id: 1, nama: 'Produk A', monthly: Array(12).fill(0) }],
+    calendar_expense: [{ id: 1, nama: 'Biaya Ops', monthly: Array(12).fill(0) }]
+  });
+
+  return (
+    <div className="flex flex-col h-screen bg-[#F8FAFC]">
+      <header className="bg-slate-900 text-white p-4 flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <Briefcase className="text-orange-400" />
+          <h1 className="font-bold">Business Strategy App</h1>
+        </div>
+      </header>
+
+      <div className="bg-white border-b flex px-4">
+        <button onClick={() => setActiveTab('profile')} className={`p-4 text-xs font-bold ${activeTab === 'profile' ? 'border-b-2 border-orange-500' : 'text-slate-400'}`}>1. Profil & Strategi</button>
+        <button onClick={() => setActiveTab('finance')} className={`p-4 text-xs font-bold ${activeTab === 'finance' ? 'border-b-2 border-green-500' : 'text-slate-400'}`}>2. Finance Calendar</button>
+      </div>
+
+      <main className="flex-1 overflow-y-auto p-6">
+        {activeTab === 'profile' ? (
+          <div className="max-w-4xl mx-auto space-y-6">
+            <BasicProfile data={businessData} onChange={(f, v) => setBusinessData(p => ({...p, [f]: v}))} />
+            <BusinessStrategy data={businessData} />
+          </div>
+        ) : (
+          <FinanceCalendar data={businessData} setBusinessData={setBusinessData} />
+        )}
+      </main>
+    </div>
+  );
+}

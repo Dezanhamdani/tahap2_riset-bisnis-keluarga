@@ -1,0 +1,17 @@
+import React from 'react';
+
+export const BasicProfile = ({ data, onChange }: any) => (
+  <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+    <h2 className="text-xs font-black uppercase text-slate-400 mb-4 tracking-widest">Identitas Bisnis</h2>
+    <div className="space-y-4">
+      <div>
+        <label className="text-[10px] font-bold text-slate-500 block mb-1">NAMA PEMAGANG</label>
+        <input className="w-full p-2 border rounded-lg" value={data.namaPemagang} onChange={e => onChange('namaPemagang', e.target.value)} />
+      </div>
+      <div>
+        <label className="text-[10px] font-bold text-slate-500 block mb-1">NAMA BISNIS</label>
+        <input className="w-full p-2 border rounded-lg" value={data.namaBisnis} onChange={e => onChange('namaBisnis', e.target.value)} />
+      </div>
+    </div>
+  </div>
+);
