@@ -42,20 +42,7 @@ interface BusinessData {
   calendar_expense: CalendarItem[];
 }
 
-/**
- * jsPDF の動的ロード
- */
-const loadJsPDF = () => {
-  return new Promise((resolve) => {
-    if (window.jspdf) return resolve(window.jspdf);
-    const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-    script.onload = () => resolve(window.jspdf);
-    document.head.appendChild(script);
-  });
-};
 
-/**
  * デザイン済み入力コンポーネント
  */
 const TooltipInput = memo(({ label, value, onChange, placeholder, explanation, multiline = false, numeric = false }: any) => (
@@ -172,46 +159,29 @@ export default function App() {
 
   const formatIDR = (n: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n);
 
-  // --- PDFエクスポート機能 (完全版) ---
-  const exportPDF = async () => {
-    const { jsPDF } = (await loadJsPDF()) as any;
-    const doc = new jsPDF('p', 'mm', 'a4');
-    doc.setFont("helvetica", "bold");
-    doc.text("tahap 2 REPORT", 15, 20);
-    doc.setFontSize(10);
-    doc.text(`Penyusun: ${businessData.namaPemagang}`, 15, 30);
-    doc.text(`Bisnis: ${businessData.namaBisnis}`, 15, 35);
-    
-    // 内容の描画 (簡略化していますが、実際は全データをループ)
-    doc.save(`Strategy_${businessData.namaBisnis}.pdf`);
-  };
+return (
+    <div className="flex flex-col h-screen bg-[#F8FAFC] overflow-hidden">
+      {/* Header */}
+      <header className="bg-slate-900 border-b px-6 py-4 flex justify-between items-center z-40 shrink-0 shadow-xl">
+        <div className="flex items-center gap-3">
+          <div className="bg-orange-500 p-2 rounded-xl text-white shadow-lg"><Briefcase size={20} /></div>
+          <div>
+            <h1 className="text-white font-black text-sm uppercase tracking-tighter">tahap 2</h1>
+            <p className="text-slate-400 text-[9px] font-bold uppercase tracking-widest">Family Business Planner</p>
+          </div>
+        </div>
+        {/* ← ここにあったボタンの div (flex gap-2) を削除しました */}
+      </header>
 
-  return (
-    <div className="flex flex-col h-screen bg-[#F8FAFC] overflow-hidden">
-      {/* Header */}
-      <header className="bg-slate-900 border-b px-6 py-4 flex justify-between items-center z-40 shrink-0 shadow-xl">
-        <div className="flex items-center gap-3">
-          <div className="bg-orange-500 p-2 rounded-xl text-white shadow-lg"><Briefcase size={20} /></div>
-          <div>
-            <h1 className="text-white font-black text-sm uppercase tracking-tighter">tahap 2</h1>
-            <p className="text-slate-400 text-[9px] font-bold uppercase tracking-widest">Family Business Planner</p>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <button onClick={exportPDF} className="bg-white/10 text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase hover:bg-white/20 transition-all flex items-center gap-2 border border-white/10"><Download size={14} /> PDF</button>
-          <button onClick={() => {}} className="bg-green-600 text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase hover:bg-green-700 transition-all flex items-center gap-2 shadow-lg"><Save size={14} /> Simpan</button>
-        </div>
-      </header>
-
-      {/* Tabs */}
-      <div className="bg-white border-b px-6 flex gap-2 shrink-0">
-        <button onClick={() => setActiveTab('profile')} className={`flex items-center gap-2 px-6 py-4 text-[10px] font-black transition-all ${activeTab === 'profile' ? 'text-orange-600 border-b-2 border-orange-600' : 'text-slate-400'}`}>
-          <BookOpen size={16} /> PROFIL & STRATEGI
-        </button>
-        <button onClick={() => setActiveTab('finance')} className={`flex items-center gap-2 px-6 py-4 text-[10px] font-black transition-all ${activeTab === 'finance' ? 'text-green-600 border-b-2 border-green-600' : 'text-slate-400'}`}>
-          <Calculator size={16} /> KALENDER USAHA
-        </button>
-      </div>
+      {/* Tabs */}
+      <div className="bg-white border-b px-6 flex gap-2 shrink-0">
+        <button onClick={() => setActiveTab('profile')} className={`flex items-center gap-2 px-6 py-4 text-[10px] font-black transition-all ${activeTab === 'profile' ? 'text-orange-600 border-b-2 border-orange-600' : 'text-slate-400'}`}>
+          <BookOpen size={16} /> PROFIL & STRATEGI
+        </button>
+        <button onClick={() => setActiveTab('finance')} className={`flex items-center gap-2 px-6 py-4 text-[10px] font-black transition-all ${activeTab === 'finance' ? 'text-green-600 border-b-2 border-green-600' : 'text-slate-400'}`}>
+          <Calculator size={16} /> KALENDER USAHA
+        </button>
+      </div>
 
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto p-6 md:p-12 custom-scrollbar bg-slate-50">
