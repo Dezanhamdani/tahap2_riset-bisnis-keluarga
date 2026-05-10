@@ -223,10 +223,10 @@ export default function App() {
               <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-slate-200 border-t-8 border-t-slate-800">
                 <div className="flex items-center gap-3 mb-8"><UserCheck size={24} className="text-slate-400"/><h2 className="font-black text-xs uppercase tracking-widest text-slate-800">Informasi Dasar</h2></div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
-                  <TooltipInput label="Nama Pemagang" value={businessData.namaPemagang} onChange={(v: string) => handleInputChange('namaPemagang', v)} placeholder="氏名を入力" />
-                  <TooltipInput label="Nama Bisnis" value={businessData.namaBisnis} onChange={(v: string) => handleInputChange('namaBisnis', v)} placeholder="屋号を入力" />
-                  <TooltipInput label="Jenis Komoditas" value={businessData.jenisKomoditas} onChange={(v: string) => handleInputChange('jenisKomoditas', v)} placeholder="品目（例：米、野菜）" />
-                  <TooltipInput label="Lokasi Bisnis" value={businessData.lokasiBisnis} onChange={(v: string) => handleInputChange('lokasiBisnis', v)} placeholder="住所を入力" />
+                  <TooltipInput label="Nama Pemagang" value={businessData.namaPemagang} onChange={(v: string) => handleInputChange('namaPemagang', v)} placeholder="Nama lengkap" />
+                  <TooltipInput label="Nama Bisnis" value={businessData.namaBisnis} onChange={(v: string) => handleInputChange('namaBisnis', v)} placeholder="Nama bisnis keluarga" />
+                  <TooltipInput label="Jenis Komoditas" value={businessData.jenisKomoditas} onChange={(v: string) => handleInputChange('jenisKomoditas', v)} placeholder="komoditas" />
+                  <TooltipInput label="Lokasi Bisnis" value={businessData.lokasiBisnis} onChange={(v: string) => handleInputChange('lokasiBisnis', v)} placeholder="Lokasi bisnis" />
                 </div>
                 <TooltipInput label="Visi & Misi" value={businessData.visiMisi} onChange={(v: string) => handleInputChange('visiMisi', v)} multiline placeholder="将来の目標やビジョン" />
               </div>
