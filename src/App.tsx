@@ -42,9 +42,7 @@ interface BusinessData {
   calendar_expense: CalendarItem[];
 }
 
-
- * デザイン済み入力コンポーネント
- */
+// デザイン済み入力コンポーネント
 const TooltipInput = memo(({ label, value, onChange, placeholder, explanation, multiline = false, numeric = false }: any) => (
   <div className="mb-4 group">
     <div className="flex items-center gap-2 mb-1.5">
