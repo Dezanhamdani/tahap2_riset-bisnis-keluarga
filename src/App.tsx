@@ -149,8 +149,17 @@ const [businessData, setBusinessData] = useState<BusinessData>({
   const handleInputChange = (f: keyof BusinessData, v: string) => setBusinessData(p => ({ ...p, [f]: v }));
   
   const addDynamicRow = (type: keyof BusinessData) => {
-    setBusinessData(p => ({ ...p, [type]: [...(p[type] as any[]), { id: Date.now(), text: '' }] }));
-  };
+    if (type === 'calendar_income' || type === 'calendar_expense') {
+      // For Calendar sections: need 'nama' and 'monthly' array
+      setBusinessData(p => ({ 
+        ...p, 
+        [type]: [...(p[type] as any[]), { id: Date.now(), nama: '', monthly: Array(12).fill(0) }] 
+      }));
+    } else {
+      // For Strategy sections: need only 'text'
+      setBusinessData(p => ({ ...p, [type]: [...(p[type] as any[]), { id: Date.now(), text: '' }] }));
+    }
+  };
 
   const removeDynamicRow = (type: keyof BusinessData, id: number) => {
     setBusinessData(p => ({ ...p, [type]: (p[type] as any[]).filter(i => i.id !== id) }));
@@ -200,7 +209,10 @@ return (
 {activeTab === 'profile' ? (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
               
-{/* 1. Penyusun Report (背景を白に変更) */}
+{activeTab === 'profile' ? (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
+              
+              {/* 1. Reporter Info Section */}
               <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-slate-200">
                 <div className="flex items-center gap-3 mb-6">
                   <UserCheck size={20} className="text-slate-400"/>
@@ -213,7 +225,8 @@ return (
                   placeholder="Nama Lengkap" 
                 />
               </div>
-              {/* 2. Identitas Bisnis Keluarga (基本情報をひとくくりに) */}
+
+              {/* 2. Business Identity Section */}
               <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-slate-200">
                 <div className="flex items-center gap-3 mb-8">
                   <LayoutGrid size={24} className="text-slate-400"/>
@@ -239,7 +252,6 @@ return (
                     onChange={(v: string) => handleInputChange('lokasiBisnis', v)} 
                     placeholder="Lokasi bisnis" 
                   />
-                  {/* あなたが追加したLink Mapsなどの項目があればここに入れます */}
                   <TooltipInput 
                     label="Link Maps" 
                     value={businessData.linkMaps} 
@@ -256,7 +268,7 @@ return (
                 />
               </div>
 
-              {/* 3. Strategi & Keberhasilan (既存のインドネシア語設定を維持) */}
+              {/* 3. Strategy Section */}
               <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-xl border border-orange-100 border-t-8 border-t-orange-500">
                 <div className="flex items-center gap-3 mb-8 text-orange-600"><LayoutGrid size={24} /><h2 className="font-black text-xs uppercase tracking-widest">Strategi & Keberhasilan</h2></div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -269,87 +281,120 @@ return (
               </div>
             </div>
           ) : (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
-              {/* Financial Stats */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="bg-slate-900 p-8 rounded-[2rem] text-white shadow-2xl relative overflow-hidden">
-                  <div className="absolute right-[-10%] top-[-10%] text-white/5 rotate-12"><Calculator size={120} /></div>
-                  <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Avg Income / Month</span>
-                  <div className="text-3xl font-mono font-black mt-2 text-emerald-400">{formatIDR(totalYearlyIncome/12)}</div>
-                </div>
-                <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-sm">
-                  <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Avg Profit / Month</span>
-                  <div className={`text-3xl font-mono font-black mt-2 ${avgProfit >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>{formatIDR(avgProfit)}</div>
-                </div>
-              </div>
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
+              {/* Financial Stats Summary */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="bg-slate-900 p-8 rounded-[2rem] text-white shadow-2xl relative overflow-hidden">
+                  <div className="absolute right-[-10%] top-[-10%] text-white/5 rotate-12"><Calculator size={120} /></div>
+                  <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Avg Income / Month</span>
+                  <div className="text-3xl font-mono font-black mt-2 text-emerald-400">{formatIDR(totalYearlyIncome/12)}</div>
+                </div>
+                <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-sm">
+                  <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Avg Profit / Month</span>
+                  <div className={`text-3xl font-mono font-black mt-2 ${avgProfit >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>{formatIDR(avgProfit)}</div>
+                </div>
+              </div>
 
-              {/* Table */}
-              <div className="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="w-full min-w-[1000px] border-separate border-spacing-0">
-                    <thead>
-                      <tr className="bg-slate-50">
-                        <th className="p-4 text-left text-[10px] font-black text-slate-500 uppercase border-b sticky left-0 bg-slate-50 z-10">Item Description</th>
-                        <th className="p-4 text-center text-[10px] font-black text-slate-500 uppercase border-b bg-slate-100/50">Avg</th>
-                        {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(m => <th key={m} className="p-4 text-center text-[10px] font-black text-slate-500 uppercase border-b">{m}</th>)}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {/* Income Section */}
-                      <tr className="bg-emerald-50/30">
-                        <td className="p-2 border-b font-black text-[9px] text-emerald-700 uppercase px-4" colSpan={14}>Income (Pendapatan)</td>
-                      </tr>
-                      {businessData.calendar_income.map((item, idx) => (
-                        <tr key={item.id} className="group hover:bg-slate-50 transition-colors">
-                          <td className="p-3 border-b sticky left-0 bg-white group-hover:bg-slate-50 z-10 flex items-center gap-2 min-w-[200px]">
-                            <button onClick={() => setBusinessData(p => ({...p, calendar_income: p.calendar_income.filter(i => i.id !== item.id)}))} className="text-slate-300 hover:text-rose-500"><Trash2 size={14}/></button>
-                            <input className="w-full bg-transparent font-bold text-xs outline-none border-b border-transparent focus:border-emerald-500" value={item.nama} onChange={e => {
-                              const newList = [...businessData.calendar_income];
-                              newList[idx].nama = e.target.value;
-                              setBusinessData(p => ({...p, calendar_income: newList}));
-                            }} />
-                          </td>
-                          <td className="p-3 border-b bg-slate-50 font-mono text-[10px] font-bold text-right text-emerald-600">{(item.monthly.reduce((a,b)=>a+b,0)/12).toLocaleString()}</td>
-                          {item.monthly.map((val, mIdx) => (
-                            <td key={mIdx} className="p-2 border-b">
-                              <div className="flex items-center gap-1">
-                                <input type="number" className="w-full h-8 px-2 text-right font-mono text-[11px] font-bold bg-white border border-slate-100 rounded focus:ring-2 focus:ring-emerald-100 outline-none" value={val} onChange={e => {
-                                  const newList = [...businessData.calendar_income];
-                                  newList[idx].monthly[mIdx] = Number(e.target.value);
-                                  setBusinessData(p => ({...p, calendar_income: newList}));
-                                }} />
-                                {mIdx === 0 && <button onClick={() => repeatFirstMonth('calendar_income', item.id)} className="p-1 text-emerald-400 hover:text-emerald-600"><Copy size={12}/></button>}
-                              </div>
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                      
-                      {/* Profit Row */}
-                      <tr className="bg-slate-900 text-white">
-                        <td className="p-4 font-black text-[10px] uppercase tracking-widest sticky left-0 bg-slate-900 z-10">Net Profit (Laba Bersih)</td>
-                        <td className="p-4 text-right font-mono font-black text-emerald-400 bg-slate-800">{Math.round(avgProfit).toLocaleString()}</td>
-                        {monthlyStats.map((s, i) => (
-                          <td key={i} className={`p-4 text-right font-mono font-black text-[11px] ${s.profit >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                            {s.profit.toLocaleString()}
-                          </td>
-                        ))}
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          )}
+              {/* Monthly Business Calendar Table */}
+              <div className="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[1000px] border-separate border-spacing-0">
+                    <thead>
+                      <tr className="bg-slate-50">
+                        <th className="p-4 text-left text-[10px] font-black text-slate-500 uppercase border-b sticky left-0 bg-slate-50 z-10">Item Description</th>
+                        <th className="p-4 text-center text-[10px] font-black text-slate-500 uppercase border-b bg-slate-100/50">Avg</th>
+                        {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(m => <th key={m} className="p-4 text-center text-[10px] font-black text-slate-500 uppercase border-b">{m}</th>)}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* --- Income Section --- */}
+                      <tr className="bg-emerald-50/30">
+                        <td className="p-2 border-b font-black text-[9px] text-emerald-700 uppercase px-4" colSpan={14}>Income (Pendapatan)</td>
+                      </tr>
+                      {businessData.calendar_income.map((item, idx) => (
+                        <tr key={item.id} className="group hover:bg-slate-50 transition-colors">
+                          <td className="p-3 border-b sticky left-0 bg-white group-hover:bg-slate-50 z-10 flex items-center gap-2 min-w-[200px]">
+                            <button onClick={() => setBusinessData(p => ({...p, calendar_income: p.calendar_income.filter(i => i.id !== item.id)}))} className="text-slate-300 hover:text-rose-500"><Trash2 size={14}/></button>
+                            <input className="w-full bg-transparent font-bold text-xs outline-none" value={item.nama} onChange={e => {
+                              const newList = [...businessData.calendar_income];
+                              newList[idx].nama = e.target.value;
+                              setBusinessData(p => ({...p, calendar_income: newList}));
+                            }} />
+                          </td>
+                          <td className="p-3 border-b bg-slate-50 font-mono text-[10px] font-bold text-right text-emerald-600">{(item.monthly.reduce((a,b)=>a+b,0)/12).toLocaleString()}</td>
+                          {item.monthly.map((val, mIdx) => (
+                            <td key={mIdx} className="p-2 border-b">
+                              <input type="number" className="w-full h-8 px-2 text-right font-mono text-[11px] font-bold bg-white border border-slate-100 rounded focus:ring-2 focus:ring-emerald-100 outline-none" value={val} onChange={e => {
+                                const newList = [...businessData.calendar_income];
+                                newList[idx].monthly[mIdx] = Number(e.target.value);
+                                setBusinessData(p => ({...p, calendar_income: newList}));
+                              }} />
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                      <tr>
+                        <td colSpan={14} className="p-2 border-b text-center">
+                          <button onClick={() => addDynamicRow('calendar_income')} className="text-[9px] font-black text-slate-400 hover:text-emerald-500 px-4 uppercase tracking-widest">+ Add Income Item</button>
+                        </td>
+                      </tr>
 
-        </div>
-      </div>
+                      {/* --- Expense Section (Biaya Bisnis) --- */}
+                      <tr className="bg-rose-50/30">
+                        <td className="p-2 border-b font-black text-[9px] text-rose-700 uppercase px-4" colSpan={14}>Biaya Bisnis (Expense)</td>
+                      </tr>
+                      {businessData.calendar_expense.map((item, idx) => (
+                        <tr key={item.id} className="group hover:bg-slate-50 transition-colors">
+                          <td className="p-3 border-b sticky left-0 bg-white group-hover:bg-slate-50 z-10 flex items-center gap-2 min-w-[200px]">
+                            <button onClick={() => setBusinessData(p => ({...p, calendar_expense: p.calendar_expense.filter(i => i.id !== item.id)}))} className="text-slate-300 hover:text-rose-500"><Trash2 size={14}/></button>
+                            <input className="w-full bg-transparent font-bold text-xs outline-none" value={item.nama} onChange={e => {
+                              const newList = [...businessData.calendar_expense];
+                              newList[idx].nama = e.target.value;
+                              setBusinessData(p => ({...p, calendar_expense: newList}));
+                            }} />
+                          </td>
+                          <td className="p-3 border-b bg-slate-50 font-mono text-[10px] font-bold text-right text-rose-600">{(item.monthly.reduce((a,b)=>a+b,0)/12).toLocaleString()}</td>
+                          {item.monthly.map((val, mIdx) => (
+                            <td key={mIdx} className="p-2 border-b">
+                              <input type="number" className="w-full h-8 px-2 text-right font-mono text-[11px] font-bold bg-white border border-slate-100 rounded focus:ring-2 focus:ring-rose-100 outline-none" value={val} onChange={e => {
+                                const newList = [...businessData.calendar_expense];
+                                newList[idx].monthly[mIdx] = Number(e.target.value);
+                                setBusinessData(p => ({...p, calendar_expense: newList}));
+                              }} />
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                      <tr>
+                        <td colSpan={14} className="p-2 border-b text-center">
+                          <button onClick={() => addDynamicRow('calendar_expense')} className="text-[9px] font-black text-slate-400 hover:text-rose-500 px-4 uppercase tracking-widest">+ Add Expense Item</button>
+                        </td>
+                      </tr>
+                      
+                      {/* --- Net Profit Calculation Row --- */}
+                      <tr className="bg-slate-900 text-white shadow-2xl">
+                        <td className="p-4 font-black text-[10px] uppercase tracking-widest sticky left-0 bg-slate-900 z-10">Net Profit (Laba Bersih)</td>
+                        <td className="p-4 text-right font-mono font-black text-emerald-400 bg-slate-800">{Math.round(avgProfit).toLocaleString()}</td>
+                        {monthlyStats.map((s, i) => (
+                          <td key={i} className={`p-4 text-right font-mono font-black text-[11px] ${s.profit >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                            {s.profit.toLocaleString()}
+                          </td>
+                        ))}
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
 
-      <style dangerouslySetInnerHTML={{ __html: `
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
-      `}} />
-    </div>
-  );
+      <style dangerouslySetInnerHTML={{ __html: `
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+      `}} />
+    </div>
+  );
 }
