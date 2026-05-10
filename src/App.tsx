@@ -228,7 +228,7 @@ export default function App() {
                   <TooltipInput label="Jenis Komoditas" value={businessData.jenisKomoditas} onChange={(v: string) => handleInputChange('jenisKomoditas', v)} placeholder="komoditas" />
                   <TooltipInput label="Lokasi Bisnis" value={businessData.lokasiBisnis} onChange={(v: string) => handleInputChange('lokasiBisnis', v)} placeholder="Lokasi bisnis" />
                 </div>
-                <TooltipInput label="Visi & Misi" value={businessData.visiMisi} onChange={(v: string) => handleInputChange('visiMisi', v)} multiline placeholder="将来の目標やビジョン" />
+                <TooltipInput label="Visi & Misi" value={businessData.visiMisi} onChange={(v: string) => handleInputChange('visiMisi', v)} multiline placeholder="visi dan misi" />
               </div>
 
               {/* Strategy Grid */}
