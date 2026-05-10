@@ -112,13 +112,25 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('profile');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [businessData, setBusinessData] = useState<BusinessData>({
-    namaPemagang: '', namaBisnis: '', jenisKomoditas: '', lokasiBisnis: '', linkMaps: '', ringkasan: '', latarBelakang: '', visiMisi: '',
-    sumberDana: '', investasiAset: '', 
-    pemasaran: [{ id: 1, text: '' }], sumberInfo: [{ id: 1, text: '' }], hambatan: [{ id: 1, text: '' }], risikoBisnis: [{ id: 1, text: '' }], kunciSukses: [{ id: 1, text: '' }],
-    calendar_income: [{ id: 1, nama: 'Produk A', monthly: Array(12).fill(0) }],
-    calendar_expense: [{ id: 1, nama: 'Biaya Ops', monthly: Array(12).fill(0) }]
-  });
+const [businessData, setBusinessData] = useState<BusinessData>({
+    namaPemagang: '', 
+    namaBisnis: '', 
+    jenisKomoditas: '', 
+    lokasiBisnis: '', 
+    linkMaps: '', 
+    ringkasan: '', 
+    latarBelakang: '', 
+    visiMisi: '',
+    sumberDana: '', 
+    investasiAset: '', 
+    pemasaran: [{ id: 1, text: '' }], 
+    sumberInfo: [{ id: 1, text: '' }], 
+    hambatan: [{ id: 1, text: '' }], 
+    risikoBisnis: [{ id: 1, text: '' }], 
+    kunciSukses: [{ id: 1, text: '' }],
+    calendar_income: [{ id: 1, nama: 'Produk A', monthly: Array(12).fill(0) }],
+    calendar_expense: [{ id: 1, nama: 'Biaya Ops', monthly: Array(12).fill(0) }]
+  });
 
   // --- 統計計算 ---
   const monthlyStats = useMemo(() => {
@@ -185,33 +197,81 @@ return (
       <div className="flex-1 overflow-y-auto p-6 md:p-12 custom-scrollbar bg-slate-50">
         <div className="max-w-5xl mx-auto space-y-8">
           
-          {activeTab === 'profile' ? (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8">
-              {/* Profile Card */}
-              <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-slate-200 border-t-8 border-t-slate-800">
-                <div className="flex items-center gap-3 mb-8"><UserCheck size={24} className="text-slate-400"/><h2 className="font-black text-xs uppercase tracking-widest text-slate-800">Informasi Dasar</h2></div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
-                  <TooltipInput label="Nama Pemagang" value={businessData.namaPemagang} onChange={(v: string) => handleInputChange('namaPemagang', v)} placeholder="Nama lengkap" />
-                  <TooltipInput label="Nama Bisnis" value={businessData.namaBisnis} onChange={(v: string) => handleInputChange('namaBisnis', v)} placeholder="Nama bisnis keluarga" />
-                  <TooltipInput label="Jenis Komoditas" value={businessData.jenisKomoditas} onChange={(v: string) => handleInputChange('jenisKomoditas', v)} placeholder="komoditas" />
-                  <TooltipInput label="Lokasi Bisnis" value={businessData.lokasiBisnis} onChange={(v: string) => handleInputChange('lokasiBisnis', v)} placeholder="Lokasi bisnis" />
-                </div>
-                <TooltipInput label="Visi & Misi" value={businessData.visiMisi} onChange={(v: string) => handleInputChange('visiMisi', v)} multiline placeholder="visi dan misi" />
-              </div>
+{activeTab === 'profile' ? (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
+              
+              {/* 1. Penyusun Report (独立した作成者枠) */}
+              <div className="bg-slate-900 p-6 rounded-[2rem] shadow-lg border-b-4 border-orange-500">
+                <div className="flex items-center gap-3 mb-4">
+                  <UserCheck size={18} className="text-orange-400"/>
+                  <h2 className="font-black text-[10px] uppercase tracking-widest text-white">Penyusun Report</h2>
+                </div>
+                <div className="bg-white/5 p-1 rounded-2xl">
+                  <TooltipInput 
+                    label="" 
+                    value={businessData.namaPemagang} 
+                    onChange={(v: string) => handleInputChange('namaPemagang', v)} 
+                    placeholder="Nama Lengkap" 
+                  />
+                </div>
+              </div>
 
-              {/* Strategy Grid */}
-              <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-xl border border-orange-100 border-t-8 border-t-orange-500">
-                <div className="flex items-center gap-3 mb-8 text-orange-600"><LayoutGrid size={24} /><h2 className="font-black text-xs uppercase tracking-widest">Strategi & Keberhasilan</h2></div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <DynamicList title="Pemasaran" icon={Megaphone} items={businessData.pemasaran} onAdd={() => addDynamicRow('pemasaran')} onRemove={(id: number) => removeDynamicRow('pemasaran', id)} onChange={(id: number, t: string) => updateDynamicRow('pemasaran', id, t)} colorClass="text-blue-600" btnColor="bg-blue-600" placeholder="contoh: " />
-                  <DynamicList title="Hambatan" icon={AlertCircle} items={businessData.hambatan} onAdd={() => addDynamicRow('hambatan')} onRemove={(id: number) => removeDynamicRow('hambatan', id)} onChange={(id: number, t: string) => updateDynamicRow('hambatan', id, t)} colorClass="text-rose-600" btnColor="bg-rose-600" placeholder="contoh: " />
-                </div>
-                <div className="mt-6">
-                  <DynamicList title="Kunci Sukses" icon={KeyRound} items={businessData.kunciSukses} onAdd={() => addDynamicRow('kunciSukses')} onRemove={(id: number) => removeDynamicRow('kunciSukses', id)} onChange={(id: number, t: string) => updateDynamicRow('kunciSukses', id, t)} colorClass="text-orange-600" btnColor="bg-orange-600" placeholder="contoh: " />
-                </div>
-              </div>
-            </div>
-          ) : (
+              {/* 2. Identitas Bisnis Keluarga (基本情報をひとくくりに) */}
+              <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-slate-200">
+                <div className="flex items-center gap-3 mb-8">
+                  <LayoutGrid size={24} className="text-slate-400"/>
+                  <h2 className="font-black text-xs uppercase tracking-widest text-slate-800">Identitas Bisnis Keluarga</h2>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+                  <TooltipInput 
+                    label="Nama Bisnis" 
+                    value={businessData.namaBisnis} 
+                    onChange={(v: string) => handleInputChange('namaBisnis', v)} 
+                    placeholder="Nama bisnis keluarga" 
+                  />
+                  <TooltipInput 
+                    label="Jenis Komoditas" 
+                    value={businessData.jenisKomoditas} 
+                    onChange={(v: string) => handleInputChange('jenisKomoditas', v)} 
+                    placeholder="komoditas" 
+                  />
+                  <TooltipInput 
+                    label="Lokasi Bisnis" 
+                    value={businessData.lokasiBisnis} 
+                    onChange={(v: string) => handleInputChange('lokasiBisnis', v)} 
+                    placeholder="Lokasi bisnis" 
+                  />
+                  {/* あなたが追加したLink Mapsなどの項目があればここに入れます */}
+                  <TooltipInput 
+                    label="Link Maps" 
+                    value={businessData.linkMaps} 
+                    onChange={(v: string) => handleInputChange('linkMaps', v)} 
+                    placeholder="Link Google Maps" 
+                  />
+                </div>
+                <TooltipInput 
+                  label="Visi & Misi" 
+                  value={businessData.visiMisi} 
+                  onChange={(v: string) => handleInputChange('visiMisi', v)} 
+                  multiline 
+                  placeholder="visi dan misi" 
+                />
+              </div>
+
+              {/* 3. Strategi & Keberhasilan (既存のインドネシア語設定を維持) */}
+              <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-xl border border-orange-100 border-t-8 border-t-orange-500">
+                <div className="flex items-center gap-3 mb-8 text-orange-600"><LayoutGrid size={24} /><h2 className="font-black text-xs uppercase tracking-widest">Strategi & Keberhasilan</h2></div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <DynamicList title="Pemasaran" icon={Megaphone} items={businessData.pemasaran} onAdd={() => addDynamicRow('pemasaran')} onRemove={(id: number) => removeDynamicRow('pemasaran', id)} onChange={(id: number, t: string) => updateDynamicRow('pemasaran', id, t)} colorClass="text-blue-600" btnColor="bg-blue-600" placeholder="contoh: " />
+                  <DynamicList title="Hambatan" icon={AlertCircle} items={businessData.hambatan} onAdd={() => addDynamicRow('hambatan')} onRemove={(id: number) => removeDynamicRow('hambatan', id)} onChange={(id: number, t: string) => updateDynamicRow('hambatan', id, t)} colorClass="text-rose-600" btnColor="bg-rose-600" placeholder="contoh: " />
+                </div>
+                <div className="mt-6">
+                  <DynamicList title="Kunci Sukses" icon={KeyRound} items={businessData.kunciSukses} onAdd={() => addDynamicRow('kunciSukses')} onRemove={(id: number) => removeDynamicRow('kunciSukses', id)} onChange={(id: number, t: string) => updateDynamicRow('kunciSukses', id, t)} colorClass="text-orange-600" btnColor="bg-orange-600" placeholder="contoh: " />
+                </div>
+              </div>
+            </div>
+          ) : (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
               {/* Financial Stats */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
