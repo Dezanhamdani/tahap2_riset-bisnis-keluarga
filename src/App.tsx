@@ -474,7 +474,7 @@ export default function App() {
               Projek ABP Magang
             </h1>
             <p className="text-emerald-400 text-xs font-bold uppercase tracking-[0.2em] mt-1.5 antialiased">
-              Tahap 2 : Riset Analisis Bisnis Keluarga
+              Tahap 2 : Riset Bisnis Keluarga
             </p>
           </div>
         </div>
