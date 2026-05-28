@@ -9,13 +9,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "clsx": "^2.0.0",
+    "file-saver": "^2.0.5",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
+    "lucide-react": "^0.263.1",
+    "papaparse": "^5.5.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "lucide-react": "^0.263.1",
-    "clsx": "^2.0.0",
-    "tailwind-merge": "^2.2.0"
+    "tailwind-merge": "^2.2.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.7",
+    "@types/papaparse": "^5.5.2",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",
